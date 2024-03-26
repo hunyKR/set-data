@@ -1,0 +1,25 @@
+{
+  "name": "set-data",
+  "version": "1.0.1",
+  "description": "set-data란 데이터 저장방식입니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hunyKR/set-data.git"
+  },
+  "keywords": [
+    "data",
+    "sd",
+    "set-data",
+    "setting"
+  ],
+  "author": "hunykr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hunyKR/set-data/issues"
+  },
+  "homepage": "https://github.com/hunyKR/set-data#readme"
+}

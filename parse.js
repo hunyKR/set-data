@@ -23,7 +23,7 @@ module.exports = (text) => {
         : true && line
     ) {
       const set = lineReplace.split("=");
-      sdObject[set[0]] = set[1];
+      sdObject[set[0]] = set[1].replaceAll('$E', '=');
     }
   });
   return sdObject;
