@@ -42,3 +42,11 @@ KEY2=VALUE2
 ```
 
 > `{ KEY1: 'VALUE1', KEY2: 'VALUE2' }`
+
+set-data에서는 배열을 사용할 때 다음과 같이 키에 &를 붙이며, 값에 쉼표로 요소를 구분합니다.
+
+```
+&KEY=VALUE1,VALUE2
+```
+
+> `{ KEY: ['VALUE1', 'VALUE2'] }`
