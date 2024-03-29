@@ -9,11 +9,25 @@
  * })
  */
 module.exports = (object) => {
+  const replace = (value) => value.replaceAll(' ', '$S').replaceAll('=', '$E')
   let parseString = "";
-  const objectKeys = Object.keys(object);
+  const objectReplace = new Object();
   for (prop in object) {
-    const ifLastProp = objectKeys[objectKeys.length - 1] === prop;
     const value = object[prop];
+    if (typeof value === "object") {
+      objectReplace[prop] = new Array()
+      value.forEach((value, i) => {
+        objectReplace[prop][i] = replace(value).replaceAll(',', '$C')
+      })
+    } else {
+      objectReplace[prop] = replace(value);
+    }
+  }
+  const objectKeys = Object.keys(objectReplace);
+  
+  for (prop in objectReplace) {
+    const ifLastProp = objectKeys[objectKeys.length - 1] === prop;
+    const value = objectReplace[prop];
     if (typeof value === "object") {
       let arrayString = `&${prop}=`;
       value.forEach((value, i) => {
