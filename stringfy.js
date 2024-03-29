@@ -10,11 +10,24 @@
  */
 module.exports = (object) => {
   let parseString = "";
+  const objectKeys = Object.keys(object);
   for (prop in object) {
-    parseString +=
-      Object.keys(object)[Object.keys(object).length - 1] === prop
-        ? `${prop}=${object[prop]}`
-        : `${prop}=${object[prop]}\n`;
+    const ifLastProp = objectKeys[objectKeys.length - 1] === prop;
+    const value = object[prop];
+    if (typeof value === "object") {
+      let arrayString = `&${prop}=`;
+      value.forEach((value, i) => {
+        if (i === 0) {
+          arrayString += value;
+        } else {
+          arrayString += "," + value;
+        }
+      });
+      parseString += ifLastProp ? arrayString : arrayString + "\n";
+    } else {
+      const line = `${prop}=${value}`;
+      parseString += ifLastProp ? line : line + "\n";
+    }
   }
-  return parseString
+  return parseString;
 };
