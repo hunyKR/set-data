@@ -19,19 +19,35 @@ module.exports = (text) => {
     const escape = line === "\r";
     if (!comment && !escape && line) {
       const set = lineReplace.split("=");
+      const key = set[0];
+      set.splice(0, 1);
+      const value = set.join("=");
+
       const array = lineReplace.split("")[0] === "&";
+      const bool = lineReplace.split("")[0] === "!";
+
       if (array) {
-        const arrayContent = set[1].split(",");
+        const arrayContent = value.split(",");
         arrayContent.forEach((value, i) => {
           arrayContent[i] = value.replaceAll("$C", ",");
         });
-        const arrayName = set[0].replace("&", "");
+        const arrayName = key.replace("&", "");
         sdObject[arrayName] = new Array();
         arrayContent.forEach((value) => {
           sdObject[arrayName].push(value);
         });
+      } else if (bool) {
+        const boolName = key.replace("!", "");
+        sdObject[boolName] =
+          value === "true"
+            ? true
+            : value === "false"
+            ? false
+            : (() => {
+                throw new Error(`The boolean key must be either true or false. [in ${boolName}]`);
+              })();
       } else {
-        sdObject[set[0]] = set[1].replaceAll("$E", "=");
+        sdObject[key] = value;
       }
     }
   });

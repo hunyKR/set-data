@@ -9,22 +9,26 @@
  * })
  */
 module.exports = (object) => {
-  const replace = (value) => value.replaceAll(' ', '$S').replaceAll('=', '$E')
+  const replace = (value) => value.replaceAll(" ", "$S");
   let parseString = "";
   const objectReplace = new Object();
   for (prop in object) {
     const value = object[prop];
-    if (typeof value === "object") {
-      objectReplace[prop] = new Array()
+    if (value.forEach) {
+      objectReplace[prop] = new Array();
       value.forEach((value, i) => {
-        objectReplace[prop][i] = replace(value).replaceAll(',', '$C')
-      })
+        objectReplace[prop][i] = replace(value).replaceAll(",", "$C");
+      });
+    } else if (typeof value === "string" || typeof value === "number") {
+      objectReplace[prop] = replace(String(value));
+    } else if (typeof value === "boolean") {
+      objectReplace[prop] = value;
     } else {
-      objectReplace[prop] = replace(value);
+      throw new Error(`This type is not supported. [in ${prop}]`);
     }
   }
   const objectKeys = Object.keys(objectReplace);
-  
+
   for (prop in objectReplace) {
     const ifLastProp = objectKeys[objectKeys.length - 1] === prop;
     const value = objectReplace[prop];
@@ -39,7 +43,8 @@ module.exports = (object) => {
       });
       parseString += ifLastProp ? arrayString : arrayString + "\n";
     } else {
-      const line = `${prop}=${value}`;
+      const line =
+        typeof value === "boolean" ? `!${prop}=${value}` : `${prop}=${value}`;
       parseString += ifLastProp ? line : line + "\n";
     }
   }
